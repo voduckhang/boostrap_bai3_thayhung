@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Bài 1</title>
+	<script src="jquery-3.6.0.min.js"></script>
+	<script>
+		function F1()
+		{//load, get, post
+			$.ajax({
+				url:'https://622ac8f014ccb950d22545d2.mockapi.io/sach',
+				type:'GET', //mac dinh GET
+				dataType:'json', //mac dinh la text
+				data:'kw='+$('#kw').val(), //mac dinh rong
+				//data:{kw: $('#kw').val()}23
+				success:function(dataReturn){
+					console.log(dataReturn);
+					$(".data").remove();
+					$.each(dataReturn, function(k,v) {
+						var s=`<h3 class="data" style="cursor: pointer" onclick="deleteData(${v.id})"><div class="data">${v.id}-${v.gia}-<br><img src="${v.anh}"></div>`;
+						  //var s = `<h3 class="data" style="cursor: pointer" onclick="deleteData(${v.id})">${v.id} - ${v.name}</h3>`;
+							$('#result1').append(s);
+					});
+				}
+
+			});
+		}
+		function  deleteData($id){
+        var id = $id;
+        $.ajax({
+        url: `https://622ac8f014ccb950d22545d2.mockapi.io/sach/${id}`,
+        type: "DELETE",        
+        dataType: "json",        
+        success: function (data) {
+            F1();
+        }
+        });
+    }
+	</script>
+	</head>
+	<body>
+		keyword <input type="text" id="kw"/>
+		<input type="button" value="search" onclick="F1()"/>
+		<div id=result1></div> <hr>
+		<div id=result2></div>
+	</body>
+</html>
